@@ -36,4 +36,4 @@ set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
 set(BUILD_GTEST ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-#add_subdirectory(curl_handler)
+add_subdirectory(curl_handler)

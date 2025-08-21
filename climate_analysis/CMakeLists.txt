@@ -23,6 +23,9 @@ set(SRC
     ${SRC_DIR}/climate_analysis.cpp
 )
 set(LIBS
+    libcurl
+    spdlog
+    CurlHandler
 )
 
 set(TEST_NAME
@@ -39,11 +42,11 @@ project(${PROJECT_NAME})
 if(BUILD_DOCS)
     add_subdirectory(${DOC_DIR})
 endif()
-
 add_subdirectory(${LIB_DIR})
 add_executable(${PROJECT_NAME} ${SRC})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/${LIB_DIR}/curl_handler/include
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBS})
@@ -51,18 +54,20 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBS})
 ################################
 # Tests
 ################################
-# project(${TEST_NAME})
+project(${TEST_NAME})
 
-# enable_testing()
+enable_testing()
 
-# add_executable(
-#     ${TEST_NAME}
-# )
-# target_include_directories(${TEST_NAME} PUBLIC
-# )
-# target_link_libraries(
-#     ${TEST_NAME}
-#     PRIVATE
-#     ${LIBS}
-#     GTest::gtest_main
-# )
+add_executable(
+    ${TEST_NAME}
+    ${LIB_DIR}/curl_handler/${TEST_DIR}/curl_handler_test.cpp
+)
+target_include_directories(${TEST_NAME} PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/${LIB_DIR}/curl_handler/include
+)
+target_link_libraries(
+    ${TEST_NAME}
+    PRIVATE
+    ${LIBS}
+    GTest::gtest_main
+)
