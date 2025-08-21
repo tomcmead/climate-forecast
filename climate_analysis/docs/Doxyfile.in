@@ -1,0 +1,88 @@
+# Use: `doxygen -g test.txt` to generate all possible settings for this file
+
+# not interested build output
+QUIET                  = NO
+
+# Basic settings:
+PROJECT_NAME           = "@CMAKE_PROJECT_NAME@"
+PROJECT_NUMBER         = @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
+STRIP_FROM_PATH        = @CMAKE_CURRENT_SOURCE_DIR@ \ 
+                         @PROJECT_SOURCE_DIR@
+INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/../lib @CMAKE_CURRENT_SOURCE_DIR@/../src
+FILE_PATTERNS          = *.h \
+                         *.hpp \
+                         *.hh \
+                         *.c \
+                         *.cc \
+                         *.cpp.in \
+                         *.cpp \
+                         *.md
+RECURSIVE              = YES
+
+OUTPUT_LANGUAGE        = English
+
+# Color style
+HTML_COLORSTYLE_HUE    = 220
+HTML_COLORSTYLE_SAT    = 40
+HTML_COLORSTYLE_GAMMA  = 80
+
+# If the REFERENCED_BY_RELATION tag is set to YES then for each documented
+# function all documented functions referencing it will be listed.
+# The default value is: NO.
+REFERENCED_BY_RELATION = YES
+
+# If the REFERENCES_RELATION tag is set to YES then for each documented function
+# all documented entities called/used by that function will be listed.
+# The default value is: NO.
+REFERENCES_RELATION    = YES
+
+# This is nice to have - callgraphs of functions
+HAVE_DOT               = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+
+GRAPHICAL_HIERARCHY    = YES
+DIRECTORY_GRAPH        = YES
+GENERATE_LEGEND        = YES
+INCLUDED_BY_GRAPH      = YES
+INCLUDE_GRAPH          = YES
+DOT_IMAGE_FORMAT       = png:cairo:cairo
+
+# More insight to templates, generaly not needed
+TEMPLATE_RELATIONS     = NO
+
+# in class diagrams, you will have members and such
+# Also they will be bigger
+UML_LOOK               = YES
+UML_LIMIT_NUM_FIELDS   = 16
+
+
+# should all pictures be collapsed?
+HTML_DYNAMIC_SECTIONS = NO
+
+# use with: /// @todo Do more stuff.
+GENERATE_TODOLIST      = YES
+
+# we want all we can get
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+EXTRACT_PRIVATE        = YES
+
+# We do not need latex output
+GENERATE_LATEX         = NO
+USE_PDFLATEX           = NO
+
+# this makes first sentence from comment block a brief description.
+# It is VERY useful
+JAVADOC_AUTOBRIEF      = YES
+
+# Why not...
+BUILTIN_STL_SUPPORT = YES
+
+# Do we want source code browser? YES! Do we want strip comments? NO
+SOURCE_BROWSER         = YES
+STRIP_CODE_COMMENTS    = NO
+
+# Side panel
+# If you enable this, change .container max-width: 960px; to 1240px
+GENERATE_TREEVIEW      = NO

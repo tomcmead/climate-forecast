@@ -15,6 +15,9 @@ set(LIB_DIR
 set(TEST_DIR
     test
 )
+set(DOC_DIR
+    docs
+)
 
 set(SRC
     ${SRC_DIR}/climate_analysis.cpp
@@ -26,10 +29,16 @@ set(TEST_NAME
     TestClimateAnalysis
 )
 
+option(BUILD_DOCS "Build documentation" OFF)
+
 ################################
 # Project
 ################################
 project(${PROJECT_NAME})
+
+if(BUILD_DOCS)
+    add_subdirectory(${DOC_DIR})
+endif()
 
 add_subdirectory(${LIB_DIR})
 add_executable(${PROJECT_NAME} ${SRC})
