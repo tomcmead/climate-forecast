@@ -26,6 +26,7 @@ set(LIBS
     libcurl
     spdlog
     CurlHandler
+    ClimateData
 )
 
 set(TEST_NAME
@@ -47,6 +48,7 @@ add_executable(${PROJECT_NAME} ${SRC})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/${LIB_DIR}/curl_handler/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/${LIB_DIR}/climate_data/include
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBS})
@@ -61,9 +63,10 @@ enable_testing()
 add_executable(
     ${TEST_NAME}
     ${LIB_DIR}/curl_handler/${TEST_DIR}/curl_handler_test.cpp
+    ${LIB_DIR}/climate_data/${TEST_DIR}/climate_url_test.cpp
 )
 target_include_directories(${TEST_NAME} PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/${LIB_DIR}/curl_handler/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/${LIB_DIR}/climate_data/include
 )
 target_link_libraries(
     ${TEST_NAME}

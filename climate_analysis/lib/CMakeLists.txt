@@ -37,3 +37,4 @@ set(BUILD_GTEST ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_subdirectory(curl_handler)
+add_subdirectory(climate_data)
