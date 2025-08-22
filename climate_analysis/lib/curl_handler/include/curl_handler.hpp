@@ -8,6 +8,11 @@ namespace curlconfig {
     constexpr long timeout_ms = 50000;
 }
 
+
+/**
+ * @class CurlHandler
+ * @brief Class for handling HTTP GET requests using libcurl.
+ */
 class CurlHandler final : public IHttpHandler {
 public:
     std::optional<std::string> http_get(const std::string& url) override;

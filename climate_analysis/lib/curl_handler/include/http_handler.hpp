@@ -10,6 +10,10 @@ enum class HttpCode : long{
     internal_server_error = 500L
 };
 
+/**
+ * @class IHttpHandler
+ * @brief Interface for handling HTTP GET requests.
+ */
 class IHttpHandler {
 public:
     virtual std::optional<std::string> http_get(const std::string& url) = 0;

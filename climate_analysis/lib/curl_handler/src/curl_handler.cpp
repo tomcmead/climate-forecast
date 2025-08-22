@@ -3,7 +3,7 @@
 
 /// @brief Execute HTTP GET request for target URL
 /// @param url target URL address
-/// @return HTTP status code
+/// @return HTTP response as a string, or std::nullopt on failure
 std::optional<std::string>  CurlHandler::http_get(const std::string& url) {
     CURL *curl_handle = curl_easy_init();
     if(curl_handle == nullptr){
