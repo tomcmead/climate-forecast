@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include "climate_url.hpp"
-#include <array>
 
 namespace {
     const std::array<ForecastDays, 5> days = {

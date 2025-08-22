@@ -14,11 +14,17 @@ struct DailyClimate {
 };
 
 template<typename T, size_t N>
+struct HourlyClimate {    
+    std::array<std::string, N> time;
+    std::unordered_map<std::string, std::array<T, N>> data;
+};
+
+template<typename T, size_t N>
 struct Climate {
-    double latitude;
-    double longitude;
-    DailyClimate<T, N> daily_data;
-    // HourlyClimateData hourly_data;
+    T latitude;
+    T longitude;
+    DailyClimate<T, N> daily;
+    HourlyClimate<T, N*24> hourly;
 };
 
 enum class ForecastDays {

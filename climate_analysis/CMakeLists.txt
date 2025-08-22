@@ -64,6 +64,7 @@ add_executable(
     ${TEST_NAME}
     ${LIB_DIR}/curl_handler/${TEST_DIR}/curl_handler_test.cpp
     ${LIB_DIR}/climate_data/${TEST_DIR}/climate_url_test.cpp
+    ${LIB_DIR}/climate_data/${TEST_DIR}/json_parser_test.cpp
 )
 target_include_directories(${TEST_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/${LIB_DIR}/climate_data/include
