@@ -4,14 +4,14 @@
 #include "http_handler.hpp"
 #include "climate_url.hpp"
 #include <spdlog/spdlog.h>
-#include <string>
-#include <array>
+#include <optional>
 #include <memory>
+#include <string>
 
 class ClimateData {
 public:
     explicit ClimateData(std::unique_ptr<IHttpHandler> http);
-    void GetClimateForecast(double latitude, double longitude, ForecastDays days=ForecastDays::Seven);
+    std::optional<std::string> GetClimateForecast(double latitude, double longitude, ForecastDays days=ForecastDays::Seven);
 
 private:
     std::unique_ptr<IHttpHandler> http_handle;

@@ -1,49 +1,9 @@
 #ifndef CLIMATE_URL_HPP
 #define CLIMATE_URL_HPP
 
+#include "climate_types.hpp"
 #include <string>
 #include <array>
-
-enum class ForecastDays {
-    One = 1,
-    Three = 3,
-    Seven = 7,
-    Fourteen = 14,
-    Sixteen = 16
-};
-
-namespace climate_api{
-    inline const std::string url = "https://api.open-meteo.com/v1/forecast?timezone=auto";
-    inline const std::string forecast_days = "forecast_days=";
-    inline const std::string latitude = "latitude=";
-    inline const std::string longitude = "longitude=";
-    namespace daily {
-        inline const std::array<std::string, 8> parameters = {
-            "daily=sunrise",
-            "daily=sunset",
-            "daily=uv_index_max",
-            "daily=temperature_2m_max",
-            "daily=temperature_2m_min",
-            "daily=rain_sum",
-            "daily=showers_sum",
-            "daily=snowfall_sum"
-        };
-    }
-    namespace hourly {
-        inline const std::array<std::string, 10> parameters = {
-            "hourly=temperature_2m",
-            "hourly=precipitation",
-            "hourly=showers",
-            "hourly=snowfall",
-            "hourly=snow_depth",
-            "hourly=cloud_cover",
-            "hourly=visibility",
-            "hourly=wind_speed_10m",
-            "hourly=wind_direction_10m",
-            "hourly=relative_humidity_2m"
-        };
-    }
-}
 
 /**
  * @class ClimateUrl
