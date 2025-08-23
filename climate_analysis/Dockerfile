@@ -13,7 +13,9 @@ RUN apt-get update && \
     libssl-dev \
     python3-pip \
     rapidjson-dev \
-    sqlite3
+    sqlite3 \
+    libssh2-1-dev \
+    libpsl-dev
 
 # Copy project dir into container
 COPY . .
