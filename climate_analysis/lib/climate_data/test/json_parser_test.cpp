@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include "json_parser.hpp"
-#include "climate_types.hpp"
 
 namespace {
     const std::string json_data = R"({
@@ -57,7 +56,33 @@ namespace {
         }
     })";
 
-    const Climate<double, 1> expected_climate = {
+    const std::string mock_city_json = R"({
+        "results": [
+            {
+                "id": 2950159,
+                "name": "Berlin",
+                "latitude": 52.524,
+                "longitude": 13.41053,
+                "elevation": 74.0,
+                "feature_code": "PPLC",
+                "country_code": "DE",
+                "admin1_id": 2950157,
+                "admin3_id": 6547383,
+                "admin4_id": 6547539,
+                "timezone": "Europe/Berlin",
+                "population": 3426354,
+                "postcodes": ["10967", "13347"],
+                "country_id": 2921044,
+                "country": "Germany",
+                "admin1": "State of Berlin",
+                "admin3": "Berlin, Stadt",
+                "admin4": "Berlin"
+            }
+        ],
+        "generationtime_ms": 0.46432018
+    })";
+
+    const Climate<double, ForecastDays::One> expected_climate = {
         37.77,
         -122.41,
         {
@@ -116,10 +141,10 @@ namespace {
     };
 }
 
-TEST(JsonParserTest, ParseValidJsonDouble1D_ValidClimateData){
+TEST(JsonParserTest, ParseValidClimateDouble_ValidClimateData){
     JsonParser parser;
 
-    std::optional<Climate<double, 1>> climate_data = parser.parse_json<double, 1>(json_data);
+    auto climate_data = parser.parse_climate<double, ForecastDays::One>(json_data);
 
     ASSERT_TRUE(climate_data.has_value());
     EXPECT_EQ(climate_data.value().latitude, expected_climate.latitude);
@@ -135,10 +160,10 @@ TEST(JsonParserTest, ParseValidJsonDouble1D_ValidClimateData){
     }
 }
 
-TEST(JsonParserTest, ParseValidJsonInt1D_ValidClimateData){
+TEST(JsonParserTest, ParseValidClimateInt_ValidClimateData){
     JsonParser parser;
 
-    auto climate_data = parser.parse_json<int, 1>(json_data);
+    auto climate_data = parser.parse_climate<int, ForecastDays::One>(json_data);
 
     ASSERT_TRUE(climate_data.has_value());
     EXPECT_EQ(climate_data.value().latitude, static_cast<int>(expected_climate.latitude));
@@ -149,7 +174,41 @@ TEST(JsonParserTest, ParseInvalidJson_Nullopt){
     JsonParser parser;
     const std::string invalid_json_data = json_data + "}";
 
-    auto climate_data = parser.parse_json<int, 1>(invalid_json_data);
+    auto climate_data = parser.parse_climate<int, ForecastDays::One>(invalid_json_data);
 
     ASSERT_FALSE(climate_data.has_value());
+}
+
+TEST(JsonParserTest, ParseClimateMissingFields_Nullopt){
+    JsonParser parser;
+    const std::string missing_fields_json = R"({
+        "latitude": 37.77,
+        "daily": {
+            "time": ["2023-10-01"],
+            "sunrise": ["06:30"],
+            "sunset": ["18:30"]
+        }
+    })";
+
+    auto climate_data = parser.parse_climate<double, ForecastDays::One>(missing_fields_json);
+
+    ASSERT_FALSE(climate_data.has_value());
+}
+
+TEST(JsonParserTest, ParseGeocodeValidJson_ValidCoordinates){
+    JsonParser parser;
+
+    auto coordinates = parser.parse_geocode<double>(mock_city_json);
+
+    ASSERT_TRUE(coordinates.has_value());
+    EXPECT_EQ(coordinates.value().first, 52.524);
+    EXPECT_EQ(coordinates.value().second, 13.41053);
+}
+
+TEST(JsonParserTest, ParseGeocodeInvalidJson_Nullopt){
+    JsonParser parser;
+
+    auto coordinates = parser.parse_geocode<double>(R"({"lat": 37.77, "lon": -122.41})");
+
+    ASSERT_FALSE(coordinates.has_value());
 }
