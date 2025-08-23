@@ -7,7 +7,7 @@
 
 /**
  * @class ClimateUrl
- * @brief Class for constructing climate API URLs.
+ * @brief Class for constructing climate API URLs using Method Chaining.
  */
 class ClimateUrl {
 public:

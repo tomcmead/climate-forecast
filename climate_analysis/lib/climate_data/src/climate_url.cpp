@@ -1,7 +1,9 @@
 #include "climate_url.hpp"
 
+// @brief Constructs full URL for climate API request.
+// @return Constructed URL as string.
 const std::string& ClimateUrl::get_url(){
-    url = climate_api::url;
+    url = climate_api::climate_url;
     url += "&" + climate_api::forecast_days + "=" + std::to_string(static_cast<int>(forecast_days));
     url += "&" + climate_api::latitude + "=" + std::to_string(latitude);
     url += "&" + climate_api::longitude + "=" + std::to_string(longitude);

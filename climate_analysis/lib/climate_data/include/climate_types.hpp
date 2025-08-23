@@ -5,28 +5,6 @@
 #include <array>
 #include <unordered_map>
 
-template<typename T, size_t N>
-struct DailyClimate {    
-    std::array<std::string, N> time;
-    std::array<std::string, N> sunrise;
-    std::array<std::string, N> sunset;
-    std::unordered_map<std::string, std::array<T, N>> data;
-};
-
-template<typename T, size_t N>
-struct HourlyClimate {    
-    std::array<std::string, N> time;
-    std::unordered_map<std::string, std::array<T, N>> data;
-};
-
-template<typename T, size_t N>
-struct Climate {
-    T latitude;
-    T longitude;
-    DailyClimate<T, N> daily;
-    HourlyClimate<T, N*24> hourly;
-};
-
 enum class ForecastDays {
     One = 1,
     Three = 3,
@@ -34,9 +12,32 @@ enum class ForecastDays {
     Fourteen = 14,
     Sixteen = 16
 };
+template<typename T, ForecastDays N>
+struct DailyClimate {    
+    std::array<std::string, static_cast<size_t>(N)> time;
+    std::array<std::string, static_cast<size_t>(N)> sunrise;
+    std::array<std::string, static_cast<size_t>(N)> sunset;
+    std::unordered_map<std::string, std::array<T, static_cast<size_t>(N)>> data;
+};
+
+template<typename T, ForecastDays N>
+struct HourlyClimate {    
+    std::array<std::string, static_cast<size_t>(N)*24> time;
+    std::unordered_map<std::string, std::array<T, static_cast<size_t>(N)*24>> data;
+};
+
+template<typename T, ForecastDays N>
+struct Climate {
+    T latitude;
+    T longitude;
+    DailyClimate<T, N> daily;
+    HourlyClimate<T, N> hourly;
+};
+
 
 namespace climate_api{
-    inline const std::string url = "https://api.open-meteo.com/v1/forecast?timezone=auto";
+    inline const std::string climate_url = "https://api.open-meteo.com/v1/forecast?timezone=auto";
+    inline const std::string geocode_url = "https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&format=json&name=";
     inline const std::string forecast_days = "forecast_days";
     inline const std::string latitude = "latitude";
     inline const std::string longitude = "longitude";

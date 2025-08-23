@@ -1,5 +1,7 @@
 #include "climate_data.hpp"
 
+// @brief Constructor for ClimateData class.
+// @param http Unique pointer to an IHttpHandler instance for HTTP requests.
 ClimateData::ClimateData(std::unique_ptr<IHttpHandler> http) : http_handle(std::move(http)) {
     if (http_handle == nullptr) {
         spdlog::critical("ClimateData::ClimateData HTTP handler is null");
@@ -7,19 +9,18 @@ ClimateData::ClimateData(std::unique_ptr<IHttpHandler> http) : http_handle(std::
     }
 }
 
-std::optional<std::string> ClimateData::GetClimateForecast(double latitude, double longitude, ForecastDays days) {
-    if(latitude<-90.0 || latitude>90.0 || longitude<-180.0 || longitude>180.0) {
-        spdlog::error("ClimateData::GetClimateForecast Invalid latitude or longitude: ({}, {})", latitude, longitude);
-        return std::nullopt;
+// @brief Fetch (latitude, longitude) of city using the OpenMeteo Geocoding API.
+// @param city Name of city to geocode.
+// @return pair containing the (latitude, longitude) of city.
+std::optional<std::pair<double, double>> ClimateData::get_city_coordinates(const std::string& city) {
+    const std::string url = climate_api::geocode_url + city;
+
+    auto response = http_handle->http_get(url);
+    if (!response.has_value()) {
+        spdlog::error("Failed to fetch geocode data for city: {}", city);
+        return std::nullopt;           
     }
 
-    ClimateUrl url(latitude, longitude, days);
-    
-    auto response = http_handle->http_get(url());
-    if (!response) {
-        spdlog::error("Failed to retrieve data from URL: {}", url());
-        return std::nullopt;
-    }
-
-    return "";
+    JsonParser parser;
+    return parser.parse_geocode<double>(response.value());
 }
