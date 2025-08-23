@@ -69,6 +69,7 @@ add_executable(
 )
 target_include_directories(${TEST_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/${LIB_DIR}/climate_data/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/${LIB_DIR}/climate_data/test
     ${CMAKE_CURRENT_SOURCE_DIR}/${LIB_DIR}/curl_handler/include
     ${CMAKE_CURRENT_SOURCE_DIR}/${LIB_DIR}/curl_handler/test
 )
