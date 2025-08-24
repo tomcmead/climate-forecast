@@ -41,10 +41,13 @@ namespace climate_api{
     inline const std::string forecast_days = "forecast_days";
     inline const std::string latitude = "latitude";
     inline const std::string longitude = "longitude";
+    inline const std::string time = "time";
+    inline const std::string results = "results";
     namespace daily {
-        inline const std::array<std::string, 8> parameters = {
-            "sunrise",
-            "sunset",
+        inline const std::string daily = "daily";
+        inline const std::string sunrise = "sunrise";
+        inline const std::string sunset = "sunset";
+        inline const std::array<std::string, 6> parameters = {
             "uv_index_max",
             "temperature_2m_max",
             "temperature_2m_min",
@@ -54,6 +57,7 @@ namespace climate_api{
         };
     }
     namespace hourly {
+        inline const std::string hourly = "hourly";
         inline const std::array<std::string, 10> parameters = {
             "temperature_2m",
             "precipitation",

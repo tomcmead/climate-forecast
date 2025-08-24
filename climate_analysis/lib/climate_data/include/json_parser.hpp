@@ -45,21 +45,21 @@ std::optional<std::pair<T,T>> JsonParser::parse_geocode(const std::string& json_
         return std::nullopt;
     }
 
-    if (!doc.HasMember("results") || !doc["results"].IsArray()) {
+    if (!doc.HasMember(climate_api::results.c_str()) || !doc[climate_api::results.c_str()].IsArray()) {
         spdlog::error("JsonParser::parse_geocode 'results' field is missing or not an array");
         return std::nullopt;
     }
 
-    const rapidjson::Value& city = doc["results"][0];
+    const rapidjson::Value& city = doc[climate_api::results.c_str()][0];
     if(!city.IsObject() || 
-       !city.HasMember("latitude") || !city.HasMember("longitude") ||
-       !city["latitude"].IsNumber() || !city["longitude"].IsNumber()) {
+       !city.HasMember(climate_api::latitude.c_str()) || !city.HasMember(climate_api::longitude.c_str()) ||
+       !city[climate_api::latitude.c_str()].IsNumber() || !city[climate_api::longitude.c_str()].IsNumber()) {
         spdlog::error("JsonParser::parse_geocode 'latitude' or 'longitude' field is missing");
         return std::nullopt;
     }
 
-    T latitude = static_cast<T>(city["latitude"].GetDouble());
-    T longitude = static_cast<T>(city["longitude"].GetDouble());
+    T latitude = static_cast<T>(city[climate_api::latitude.c_str()].GetDouble());
+    T longitude = static_cast<T>(city[climate_api::longitude.c_str()].GetDouble());
     return std::make_pair(latitude, longitude);
 }
 
@@ -79,7 +79,7 @@ std::optional<Climate<T, N>> JsonParser::parse_climate(const std::string& json_d
 
     Climate<T, N> climate;
 
-    if (!doc.HasMember("latitude") || !doc.HasMember("longitude")) {
+    if (!doc.HasMember(climate_api::latitude.c_str()) || !doc.HasMember(climate_api::longitude.c_str())) {
         spdlog::error("JsonParser::parse_climate 'latitude' or 'longitude' field is missing");
         return std::nullopt;
     }
@@ -107,21 +107,21 @@ std::optional<Climate<T, N>> JsonParser::parse_climate(const std::string& json_d
 // @return true if parse success, false otherwise.
 template<typename T, ForecastDays N>
 bool JsonParser::get_daily(Climate<T, N>& climate){
-    const auto& daily = doc["daily"];
+    const auto& daily = doc[climate_api::daily::daily.c_str()];
     if (!daily.IsObject()) {
         spdlog::error("JsonParser::parse 'daily' field is not JSON object");
         return FAILURE;
     }
 
-    if (!daily.HasMember("time") || !daily["time"].IsArray() ||
-        !daily.HasMember("sunset") || !daily["sunset"].IsArray() ||
-        !daily.HasMember("sunrise") || !daily["sunrise"].IsArray()) {
+    if (!daily.HasMember(climate_api::time.c_str()) || !daily[climate_api::time.c_str()].IsArray() ||
+        !daily.HasMember(climate_api::daily::sunset.c_str()) || !daily[climate_api::daily::sunset.c_str()].IsArray() ||
+        !daily.HasMember(climate_api::daily::sunrise.c_str()) || !daily[climate_api::daily::sunrise.c_str()].IsArray()) {
         spdlog::error("JsonParser::parse 'time' or 'sunset' or 'sunrise' field is missing or not an array");
         return FAILURE;
     }
-    const auto& times = daily["time"];
-    const auto& sunset = daily["sunset"];
-    const auto& sunrise = daily["sunrise"];
+    const auto& times = daily[climate_api::time.c_str()];
+    const auto& sunset = daily[climate_api::daily::sunset.c_str()];
+    const auto& sunrise = daily[climate_api::daily::sunrise.c_str()];
     for (rapidjson::SizeType i = 0; i < times.Size(); ++i) {
         climate.daily.time[i] = times[i].GetString();
         climate.daily.sunset[i] = sunset[i].GetString();
@@ -149,17 +149,17 @@ bool JsonParser::get_daily(Climate<T, N>& climate){
 // @return true if parse success, false otherwise.
 template<typename T, ForecastDays N>
 bool JsonParser::get_hourly(Climate<T, N>& climate){
-    const auto& hourly = doc["hourly"];
+    const auto& hourly = doc[climate_api::hourly::hourly.c_str()];
     if (!hourly.IsObject()) {
         spdlog::error("JsonParser::parse 'hourly' field is not JSON object");
         return FAILURE;
     }
 
-    if (!hourly.HasMember("time") || !hourly["time"].IsArray()) {
+    if (!hourly.HasMember(climate_api::time.c_str()) || !hourly[climate_api::time.c_str()].IsArray()) {
         spdlog::error("JsonParser::parse 'time' field is missing or not an array");
         return FAILURE;
     }
-    const auto& times = hourly["time"];
+    const auto& times = hourly[climate_api::time.c_str()];
     for (rapidjson::SizeType i = 0; i < times.Size(); ++i) {
         climate.hourly.time[i] = times[i].GetString();
     }
