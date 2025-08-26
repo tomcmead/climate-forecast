@@ -2,20 +2,15 @@
 #define CLIMATE_DATA_HPP
 
 #include "http_handler.hpp"
-#include "climate_types.hpp"
 #include "json_parser.hpp"
 #include "climate_url.hpp"
-#include <spdlog/spdlog.h>
-#include <optional>
 #include <memory>
-#include <string>
-#include <utility>
 
 class ClimateData {
 public:
     explicit ClimateData(std::unique_ptr<IHttpHandler> http);
     template<ForecastDays days=ForecastDays::Seven>
-    std::optional<Climate<double, days>> GetClimateForecast(const std::string& city);
+    std::optional<Climate<days>> GetClimateForecast(const std::string& city);
 
 private:
     std::unique_ptr<IHttpHandler> http_handle;
@@ -27,7 +22,7 @@ private:
 // @param city Name of city to get forecast.
 // @return Optional Climate data if successful, otherwise nullopt.
 template<ForecastDays days>
-std::optional<Climate<double, days>> ClimateData::GetClimateForecast(const std::string& city){
+std::optional<Climate<days>> ClimateData::GetClimateForecast(const std::string& city){
     auto coordinates = get_city_coordinates(city);
     if(!coordinates.has_value()) {
         spdlog::error("ClimateData::GetClimateForecast Failed to get coordinates for city: {}", city);
@@ -48,7 +43,7 @@ std::optional<Climate<double, days>> ClimateData::GetClimateForecast(const std::
     }
 
     JsonParser parser;
-    return parser.parse_climate<double, days>(response.value());
+    return parser.parse_climate<days>(response.value());
 }
 
 #endif // CLIMATE_DATA_HPP

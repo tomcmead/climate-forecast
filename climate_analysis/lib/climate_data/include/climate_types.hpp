@@ -12,26 +12,26 @@ enum class ForecastDays {
     Fourteen = 14,
     Sixteen = 16
 };
-template<typename T, ForecastDays N>
+template<ForecastDays N>
 struct DailyClimate {    
     std::array<std::string, static_cast<size_t>(N)> time;
     std::array<std::string, static_cast<size_t>(N)> sunrise;
     std::array<std::string, static_cast<size_t>(N)> sunset;
-    std::unordered_map<std::string, std::array<T, static_cast<size_t>(N)>> data;
+    std::unordered_map<std::string, std::array<double, static_cast<size_t>(N)>> data;
 };
 
-template<typename T, ForecastDays N>
+template<ForecastDays N>
 struct HourlyClimate {    
     std::array<std::string, static_cast<size_t>(N)*24> time;
-    std::unordered_map<std::string, std::array<T, static_cast<size_t>(N)*24>> data;
+    std::unordered_map<std::string, std::array<double, static_cast<size_t>(N)*24>> data;
 };
 
-template<typename T, ForecastDays N>
+template<ForecastDays N>
 struct Climate {
-    T latitude;
-    T longitude;
-    DailyClimate<T, N> daily;
-    HourlyClimate<T, N> hourly;
+    double latitude;
+    double longitude;
+    DailyClimate<N> daily;
+    HourlyClimate<N> hourly;
 };
 
 

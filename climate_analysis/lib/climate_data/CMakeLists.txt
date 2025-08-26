@@ -8,7 +8,8 @@ project(${LIB_NAME})
 
 set(SRC_FILES
     src/climate_data.cpp
-    src/climate_url.cpp)
+    src/climate_url.cpp
+    src/json_parser.cpp)
 
 add_library(${LIB_NAME} STATIC
     ${SRC_FILES})

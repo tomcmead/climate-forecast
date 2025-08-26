@@ -1,6 +1,6 @@
 #include "climate_data.hpp"
-#include <algorithm> // Required for std::remove_if
-#include <cctype>    // Required for std::isspace
+#include <algorithm>
+#include <cctype>
 
 // @brief Constructor for ClimateData class.
 // @param http Unique pointer to an IHttpHandler instance for HTTP requests.
@@ -20,10 +20,10 @@ std::optional<std::pair<double, double>> ClimateData::get_city_coordinates(const
 
     auto response = http_handle->http_get(url);
     if (!response.has_value()) {
-        spdlog::error("Failed to fetch geocode data for city: {}", city);
+        spdlog::error("ClimateData::get_city_coordinates Failed to fetch geocode data for city: {}", city);
         return std::nullopt;           
     }
 
     JsonParser parser;
-    return parser.parse_geocode<double>(response.value());
+    return parser.parse_geocode(response.value());
 }

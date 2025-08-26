@@ -3,10 +3,10 @@
 #include "json_parser.hpp"
 
 
-TEST(JsonParserTest, ParseValidClimateDouble_ValidClimateData){
+TEST(JsonParserTest, ParseValidClimate_ValidClimateData){
     JsonParser parser;
 
-    auto climate_data = parser.parse_climate<double, ForecastDays::One>(json_test::mock_climate_json);
+    auto climate_data = parser.parse_climate<ForecastDays::One>(json_test::mock_climate_json);
 
     ASSERT_TRUE(climate_data.has_value());
     EXPECT_EQ(climate_data.value().latitude, json_test::expected_climate.latitude);
@@ -22,21 +22,11 @@ TEST(JsonParserTest, ParseValidClimateDouble_ValidClimateData){
     }
 }
 
-TEST(JsonParserTest, ParseValidClimateInt_ValidClimateData){
-    JsonParser parser;
-
-    auto climate_data = parser.parse_climate<int, ForecastDays::One>(json_test::mock_climate_json);
-
-    ASSERT_TRUE(climate_data.has_value());
-    EXPECT_EQ(climate_data.value().latitude, static_cast<int>(json_test::expected_climate.latitude));
-    EXPECT_EQ(climate_data.value().longitude, static_cast<int>(json_test::expected_climate.longitude));
-}
-
 TEST(JsonParserTest, ParseInvalidJson_Nullopt){
     JsonParser parser;
     const std::string invalid_json_data = json_test::mock_climate_json + "}";
 
-    auto climate_data = parser.parse_climate<int, ForecastDays::One>(invalid_json_data);
+    auto climate_data = parser.parse_climate<ForecastDays::One>(invalid_json_data);
 
     ASSERT_FALSE(climate_data.has_value());
 }
@@ -52,7 +42,7 @@ TEST(JsonParserTest, ParseClimateMissingFields_Nullopt){
         }
     })";
 
-    auto climate_data = parser.parse_climate<double, ForecastDays::One>(missing_fields_json);
+    auto climate_data = parser.parse_climate<ForecastDays::One>(missing_fields_json);
 
     ASSERT_FALSE(climate_data.has_value());
 }
@@ -60,7 +50,7 @@ TEST(JsonParserTest, ParseClimateMissingFields_Nullopt){
 TEST(JsonParserTest, ParseGeocodeValidJson_ValidCoordinates){
     JsonParser parser;
 
-    auto coordinates = parser.parse_geocode<double>(json_test::mock_city_json);
+    auto coordinates = parser.parse_geocode(json_test::mock_city_json);
 
     ASSERT_TRUE(coordinates.has_value());
     EXPECT_EQ(coordinates.value().first, json_test::expected_coordinates.first);
@@ -70,7 +60,7 @@ TEST(JsonParserTest, ParseGeocodeValidJson_ValidCoordinates){
 TEST(JsonParserTest, ParseGeocodeInvalidJson_Nullopt){
     JsonParser parser;
 
-    auto coordinates = parser.parse_geocode<double>(R"({"lat": 37.77, "lon": -122.41})");
+    auto coordinates = parser.parse_geocode(R"({"lat": 37.77, "lon": -122.41})");
 
     ASSERT_FALSE(coordinates.has_value());
 }

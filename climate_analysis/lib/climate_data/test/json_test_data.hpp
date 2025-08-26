@@ -84,7 +84,7 @@ namespace json_test {
         "generationtime_ms": 0.46432018
     })";
 
-    const Climate<double, ForecastDays::One> expected_climate = {
+    const Climate<ForecastDays::One> expected_climate = {
         37.77,
         -122.41,
         {
