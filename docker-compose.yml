@@ -1,0 +1,5 @@
+services:
+  climate_analysis:
+    image: 'climate-analysis-image:latest'
+    ports:
+      - '5000:5000'
