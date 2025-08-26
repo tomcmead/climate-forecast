@@ -2,8 +2,6 @@
 #define CLIMATE_URL_HPP
 
 #include "climate_types.hpp"
-#include <string>
-#include <array>
 
 /**
  * @class ClimateUrl
